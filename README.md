@@ -1,4 +1,4 @@
-arjitrim.github.com
+arjitrim.github.io
 ==================
 
 My Homepage
