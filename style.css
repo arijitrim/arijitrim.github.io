@@ -87,7 +87,7 @@ footer > * {
 	display:			inline-block;
 }
 footer div { text-align: left; }
-footer h6 { text-align: right; }
+footer h6 { text-align: center; }
 footer a {
 	color:				#900;
 	padding:			0 0.5rem;
