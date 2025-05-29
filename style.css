@@ -15,173 +15,206 @@
 
 /* 0. Reset */
 * {
-	-moz-box-sizing:	border-box;
-	box-sizing:			border-box;
+	box-sizing: border-box;
 }
-::selection { background: rgba(0, 0, 0, 0.1); }
-::-moz-selection { background: rgba(0, 0, 0, 0.1); }
-html { font-size: 16px; }
+::selection { background: rgb(0 0 0 / 10%); }
+html { font-size: 16px; } /* Base font size */
 body {
-	width:				100%;
-	margin:				0;
-	padding:			0;
-	min-width:			320px;
-	font-family:		Verdana, Georgia, Helvetica,	/* Desktop	*/
-						"Droid Sans", "Helvetica Neue",	/* Mobile	*/
-						Sans-serif;						/* Fallback	*/
-	-webkit-transform:	translateZ(0);
-	-moz-transform:		translateZ(0);
-	-ms-transform:		translateZ(0);
-	-o-transform:		translateZ(0);
-	transform:			translateZ(0);
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	min-width: 320px;
+	font-family: Raleway, Verdana, Georgia, Helvetica, "Droid Sans", "Helvetica Neue", sans-serif; /* Added Raleway */
+	transform: translateZ(0); /* May not be necessary, check for specific rendering issues */
+	color: #0c0; /* Consider WCAG contrast ratio for accessibility */
+	background-color: #000;
+	background-attachment: fixed; /* Can sometimes cause performance issues on mobile */
 }
+
 a {
-	outline:			0;
-	text-decoration:	none;
+	outline: 0;
+	text-decoration: none;
 }
+
 hr {
-	border:				1px solid;
-	border-color:		#aaa transparent #333;
+	border: 1px solid; /* Consider replacing with a top/bottom border on an element or using ::after pseudo-element for more control */
+	border-color: #aaa transparent #333; /* This creates a 3D effect, may or may not be desired */
 }
 
 /* 1. Imports */
 
+/* (No imports currently) */
+
 /* 2. Elements */
-body {
-	color:				#0c0;
-	background-color:	#000;
-	background-attachment: fixed;
-}
+
+/* General page container for centering */
 body > * {
-	width:				72%;
-	margin:				auto;
-	text-align:			center;
+	width: 72%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }
+
 header {
-	cursor:				default;
-	margin-top:			18%;
-	font-size:			4rem;
-	font-family:		monospace;
-	text-shadow:		0 0 1px #999;
+	cursor: default;
+	margin-top: 18%; /* Consider using vh or other units for more viewport-relative spacing */
+	font-size: 4rem;
+	font-family: monospace;
+	text-shadow: 0 0 1px #999;
 }
+
 nav {
-	margin:				2rem auto;
-	display:			table;
-	font-size:			1.5rem;
-	font-family:		monospace;
+	margin: 2rem auto;
+	display: flex; /* Modernized to Flexbox */
+	justify-content: center; /* Center navigation items */
+	gap: 1rem; /* Spacing between nav items, adjust as needed */
+	font-size: 1.5rem;
+	font-family: monospace;
 }
+
 nav a {
-	color:				#55B8D8;
-	width:				25%;
-	padding:			1rem;
-	display:			table-cell;
-	border:				1px solid;
-	font-weight: 		bold;
-	border-color:		transparent;
-	text-shadow:		0 0 0 #666;
+	color: #55B8D8;
+	padding: 1rem;
+	border: 1px solid transparent; /* Keep border for hover effect consistency */
+	font-weight: bold;
+	text-shadow: 0 0 0 #666;
+	flex-grow: 0; /* Prevent items from growing to fill space, unless desired */
+	flex-shrink: 0; /* Prevent items from shrinking, unless desired */
 }
-footer > * {
-	color:				#ccc;
-	width:				50%;
-	padding:			1rem 0;
-	display:			inline-block;
+
+footer > * { /* This selector might be too broad if more diverse elements are added to footer */
+	color: #ccc;
+
+	/* width: 50%; */
+
+ /* Commented out, let content define width or use flex/grid for footer layout */
+	padding: 1rem 0;
+
+	/* display: inline-block; */
+
+ /* Commented out, default block or flex/grid item behavior is often better */
 }
-footer div { text-align: left; }
-footer h6 { text-align: center; }
-footer a {
-	color:				#900;
-	padding:			0 0.5rem;
-	font-size:			0.8rem;
+
+/* footer div { text-align: left; } */
+
+ /* Style specific footer elements if needed */
+
+/* footer h6 { text-align: center; } */
+
+ /* h6 was changed to p in HTML */
+footer p#copyleft { /* More specific selector for the copyright paragraph */
+	text-align: center;
+}
+
+footer a { /* Styles for any links within the footer */
+	color: #900;
+	padding: 0 0.5rem;
+	font-size: 0.8rem;
 }
 
 /* 3. ID & Class */
 #copyleft {
-	margin:				auto;
-	padding:			1rem 0.5rem;
-	font-size:			0.6rem;
+	margin: auto; /* Already centered by footer p#copyleft */
+	padding: 1rem 0.5rem;
+	font-size: 0.6rem;
 }
-#copyleft span {
-	font-weight:		bold;
-	display:			inline-block;
-	-webkit-transform:	scaleX(-1);
-	-moz-transform:		scaleX(-1);
-	-ms-transform:		scaleX(-1);
-	-o-transform:		scaleX(-1);
-	transform:			scaleX(-1);
+
+#copyleft span { /* This was for the mirrored copyright symbol, which was removed from HTML */
+	/* font-weight: bold; */
+
+	/* display: inline-block; */
+
+	/* transform: scaleX(-1); */
+
+ /* Removed as span is no longer there for this */
 }
+
 .fade {
-	-webkit-transition:	all 300ms ease;
-	-moz-transition:	all 300ms ease;
-	-ms-transition:		all 300ms ease;
-	-o-transition:		all 300ms ease;
-	transition:			all 300ms ease;
+	transition: all 300ms ease;
 }
+
 #pulsor { 
-	opacity: 			1;
-    -webkit-animation: pusate 500ms infinite alternate;
-    -moz-animation: pusate 500ms infinite alternate;
-    -animation: pusate 500ms infinite alternate;
+	opacity: 1;
+    animation: pusate 500ms infinite alternate;
+}
+
+.visually-hidden { /* For accessible hiding of elements */
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
 }
 
 /* 4. Pseudoclass */
 nav a:hover {
-	color:				#345;
-	border-color:		#aaa;
-	border-radius:		3px;
-	box-shadow:			inset 0 0 2px #fff,
-						inset 0 -10px 50px rgba(0,0,0,0.1);
+	color: #345;
+	border-color: #aaa;
+	border-radius: 3px;
+	box-shadow: inset 0 0 2px #fff,
+				inset 0 -10px 50px rgb(0 0 0 / 10%);
 }
+
 footer a:hover {
-	color:				#422;
+	color: #422;
 }
-@-webkit-keyframes pusate {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
-@-moz-keyframes pusate {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
+
 @keyframes pusate {
     from { opacity: 1; }
     to { opacity: 0; }
 }
 
 /* 5. Media Queries */
-@media screen and (max-width: 800px) {
+@media screen and (width <= 800px) {
 	body > * {
-		width:				100%;
-		padding:			0 1rem;
+		width: 90%; /* Adjusted for better use of space on smaller screens */
+		padding-left: 1rem; /* Ensure some padding */
+		padding-right: 1rem;
+	}
+
+	nav {
+		flex-direction: column; /* Stack nav items vertically */
+		align-items: center; /* Center items in column layout */
+	}
+
+	nav a {
+		width: 80%; /* Give nav links a comfortable width when stacked */
+		text-align: center;
 	}
 }
-@media screen and (max-width: 640px) {
+
+@media screen and (width <= 640px) {
 	header { font-size: 3rem; }
 	nav { font-size: 1.2rem; }
-	footer > * {
-		width:				100%;
-		display:			block;
-	}
-	footer div, footer h6 { text-align: center; }
+
+	/* footer > * behavior is handled by default block or flex/grid now */
 }
-@media screen and (max-width: 512px) {
+
+@media screen and (width <= 512px) {
 	header { font-size: 2.5rem; }
-	nav { display: block; }
+
 	nav a {
-		width:				100%;
-		display:			block;
-		background:			-webkit-linear-gradient(top, #eee, #ddd);
-		background:			-moz-linear-gradient(top, #eee, #ddd);
-		background:			-ms-linear-gradient(top, #eee, #ddd);
-		background:			-o-linear-gradient(top, #eee, #ddd);
-		background:			linear-gradient(top, #eee, #ddd);
-		font-weight:		bold;
-		border-color:		#eee #ccc #bbb;
-		border-radius:		0;
+		width: 90%; /* Adjust width for very small screens */
+
+		/* background: linear-gradient(top, #eee, #ddd); */
+
+ /* Standard syntax */
+		background: linear-gradient(to bottom, #eee, #ddd); /* Standard syntax & direction */
+		font-weight: bold;
+		border-color: #eee #ccc #bbb;
+
+		/* border-radius: 0; */
+
+ /* Let's keep some radius from hover or define it consistently */
 	}
-	nav a:first-child { border-radius: 6px 6px 0 0; }
+	nav a:first-child { border-radius: 6px 6px 0 0; } /* Keep rounded corners for stacked view */
 	nav a:last-child { border-radius: 0 0 6px 6px; }
 }
-@media screen and (max-width: 400px) {
+
+@media screen and (width <= 400px) {
 	header { font-size: 2rem; }
 	nav { font-size: 1rem; }
 	#copyleft { font-size: 0.5rem; }
