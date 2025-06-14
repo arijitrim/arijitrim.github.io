@@ -17,18 +17,19 @@
 * {
 	box-sizing: border-box;
 }
-::selection { background: rgb(0 0 0 / 10%); }
+::selection { background: #007aff; color: white; }
 html { font-size: 16px; } /* Base font size */
 body {
 	width: 100%;
 	margin: 0;
 	padding: 0;
 	min-width: 320px;
-	font-family: Raleway, Verdana, Georgia, Helvetica, "Droid Sans", "Helvetica Neue", sans-serif; /* Added Raleway */
-	transform: translateZ(0); /* May not be necessary, check for specific rendering issues */
-	color: #0c0; /* Consider WCAG contrast ratio for accessibility */
-	background-color: #000;
-	background-attachment: fixed; /* Can sometimes cause performance issues on mobile */
+	font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	transform: translateZ(0);
+	color: #1d1d1f;
+	background-color: #ffffff;
+	line-height: 1.47059;
+	font-weight: 400;
 }
 
 a {
@@ -37,8 +38,10 @@ a {
 }
 
 hr {
-	border: 1px solid; /* Consider replacing with a top/bottom border on an element or using ::after pseudo-element for more control */
-	border-color: #aaa transparent #333; /* This creates a 3D effect, may or may not be desired */
+	border: none;
+	border-top: 1px solid #d6d6d6;
+	margin: 4rem 0;
+	width: 100%;
 }
 
 /* 1. Imports */
@@ -47,9 +50,28 @@ hr {
 
 /* 2. Elements */
 
+main {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+main section {
+	margin: 3rem 0;
+}
+
+main p {
+	font-size: 1.25rem;
+	font-weight: 400;
+	line-height: 1.6;
+	color: #86868b;
+	margin: 1.5rem 0;
+}
+
 /* General page container for centering */
 body > * {
-	width: 72%;
+	width: 90%;
+	max-width: 1200px;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
@@ -57,42 +79,46 @@ body > * {
 
 header {
 	cursor: default;
-	margin-top: 18%; /* Consider using vh or other units for more viewport-relative spacing */
-	font-size: 4rem;
-	font-family: monospace;
-	text-shadow: 0 0 1px #999;
+	margin-top: 15vh;
+	margin-bottom: 3rem;
+	font-size: 3.5rem;
+	font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+	font-weight: 700;
+	letter-spacing: -0.022em;
+	color: #1d1d1f;
 }
 
 nav {
-	margin: 2rem auto;
-	display: flex; /* Modernized to Flexbox */
-	justify-content: center; /* Center navigation items */
-	gap: 1rem; /* Spacing between nav items, adjust as needed */
-	font-size: 1.5rem;
-	font-family: monospace;
+	margin: 3rem auto 4rem;
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+	font-size: 1.125rem;
+	font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+	font-weight: 400;
 }
 
 nav a {
-	color: #55B8D8;
-	padding: 1rem;
-	border: 1px solid transparent; /* Keep border for hover effect consistency */
-	font-weight: bold;
-	text-shadow: 0 0 0 #666;
-	flex-grow: 0; /* Prevent items from growing to fill space, unless desired */
-	flex-shrink: 0; /* Prevent items from shrinking, unless desired */
+	color: #007aff;
+	padding: 0.75rem 1.5rem;
+	border: 1px solid transparent;
+	font-weight: 400;
+	border-radius: 980px;
+	transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	text-decoration: none;
+	flex-grow: 0;
+	flex-shrink: 0;
 }
 
-footer > * { /* This selector might be too broad if more diverse elements are added to footer */
-	color: #ccc;
+footer {
+	margin-top: 4rem;
+	padding: 2rem 0;
+	border-top: 1px solid #d6d6d6;
+}
 
-	/* width: 50%; */
-
- /* Commented out, let content define width or use flex/grid for footer layout */
+footer > * {
+	color: #86868b;
 	padding: 1rem 0;
-
-	/* display: inline-block; */
-
- /* Commented out, default block or flex/grid item behavior is often better */
 }
 
 /* footer div { text-align: left; } */
@@ -106,17 +132,20 @@ footer p#copyleft { /* More specific selector for the copyright paragraph */
 	text-align: center;
 }
 
-footer a { /* Styles for any links within the footer */
-	color: #900;
+footer a {
+	color: #007aff;
 	padding: 0 0.5rem;
-	font-size: 0.8rem;
+	font-size: 0.875rem;
+	transition: color 0.3s ease;
 }
 
 /* 3. ID & Class */
 #copyleft {
-	margin: auto; /* Already centered by footer p#copyleft */
+	margin: auto;
 	padding: 1rem 0.5rem;
-	font-size: 0.6rem;
+	font-size: 0.875rem;
+	font-weight: 400;
+	color: #86868b;
 }
 
 #copyleft span { /* This was for the mirrored copyright symbol, which was removed from HTML */
@@ -135,7 +164,8 @@ footer a { /* Styles for any links within the footer */
 
 #pulsor { 
 	opacity: 1;
-    animation: pusate 500ms infinite alternate;
+    animation: pusate 800ms infinite alternate ease-in-out;
+	color: #007aff;
 }
 
 .visually-hidden { /* For accessible hiding of elements */
@@ -151,15 +181,20 @@ footer a { /* Styles for any links within the footer */
 
 /* 4. Pseudoclass */
 nav a:hover {
-	color: #345;
-	border-color: #aaa;
-	border-radius: 3px;
-	box-shadow: inset 0 0 2px #fff,
-				inset 0 -10px 50px rgb(0 0 0 / 10%);
+	color: #ffffff;
+	background-color: #007aff;
+	border-color: #007aff;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+}
+
+nav a:active {
+	transform: translateY(0);
+	box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
 }
 
 footer a:hover {
-	color: #422;
+	color: #0056cc;
 }
 
 @keyframes pusate {
@@ -170,52 +205,86 @@ footer a:hover {
 /* 5. Media Queries */
 @media screen and (width <= 800px) {
 	body > * {
-		width: 90%; /* Adjusted for better use of space on smaller screens */
-		padding-left: 1rem; /* Ensure some padding */
+		width: 95%;
+		padding-left: 1rem;
 		padding-right: 1rem;
 	}
 
+	header {
+		margin-top: 10vh;
+		font-size: 2.5rem;
+	}
+
 	nav {
-		flex-direction: column; /* Stack nav items vertically */
-		align-items: center; /* Center items in column layout */
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
 	}
 
 	nav a {
-		width: 80%; /* Give nav links a comfortable width when stacked */
+		width: auto;
+		min-width: 120px;
 		text-align: center;
+	}
+
+	main {
+		padding: 1rem;
 	}
 }
 
 @media screen and (width <= 640px) {
-	header { font-size: 3rem; }
-	nav { font-size: 1.2rem; }
+	header { 
+		font-size: 2.25rem;
+		margin-top: 8vh;
+	}
+	nav { 
+		font-size: 1rem;
+		gap: 0.75rem;
+	}
 
-	/* footer > * behavior is handled by default block or flex/grid now */
+	main p {
+		font-size: 1.125rem;
+	}
 }
 
 @media screen and (width <= 512px) {
-	header { font-size: 2.5rem; }
+	header { 
+		font-size: 2rem;
+		margin-top: 6vh;
+	}
 
 	nav a {
-		width: 90%; /* Adjust width for very small screens */
-
-		/* background: linear-gradient(top, #eee, #ddd); */
-
- /* Standard syntax */
-		background: linear-gradient(to bottom, #eee, #ddd); /* Standard syntax & direction */
-		font-weight: bold;
-		border-color: #eee #ccc #bbb;
-
-		/* border-radius: 0; */
-
- /* Let's keep some radius from hover or define it consistently */
+		width: auto;
+		min-width: 100px;
+		padding: 0.625rem 1.25rem;
+		font-size: 0.95rem;
 	}
-	nav a:first-child { border-radius: 6px 6px 0 0; } /* Keep rounded corners for stacked view */
-	nav a:last-child { border-radius: 0 0 6px 6px; }
+
+	main {
+		padding: 0.5rem;
+	}
+
+	main p {
+		font-size: 1rem;
+	}
 }
 
 @media screen and (width <= 400px) {
-	header { font-size: 2rem; }
-	nav { font-size: 1rem; }
-	#copyleft { font-size: 0.5rem; }
+	header { 
+		font-size: 1.75rem;
+		margin-top: 5vh;
+	}
+	nav { 
+		font-size: 0.9rem;
+		gap: 0.5rem;
+	}
+	nav a {
+		padding: 0.5rem 1rem;
+		min-width: 80px;
+	}
+	#copyleft { font-size: 0.75rem; }
+
+	main p {
+		font-size: 0.95rem;
+	}
 }
