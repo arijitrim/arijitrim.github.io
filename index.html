@@ -1,46 +1,107 @@
 <!DOCTYPE html>
-<!-- inspiration: http://debs.io/ -->
-
 <html lang="en">
 
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Arijit Mukherjee - Software Developer, Engineer, and Tech Enthusiast">
+	<meta name="author" content="Arijit Mukherjee">
+	<meta name="theme-color" content="#0a0a0a">
 
-	<!-- meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
+	<!-- Open Graph / Social Media -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://arijitm.dev/">
+	<meta property="og:title" content="Arijit Mukherjee">
+	<meta property="og:description" content="Software Developer, Engineer, and Tech Enthusiast">
 
-	<!-- the title -->
-	<title>AM</title>
+	<!-- X Card -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="@arijit_rim">
+	<meta name="twitter:creator" content="@arijit_rim">
 
-	<!-- favicon here -->
+	<title>Arijit Mukherjee</title>
 
-	<!-- then stylesheets -->
-	<link	rel="stylesheet"
-			href="style.css" />
-	<link	rel="stylesheet"
-			href="https://fonts.googleapis.com/css?family=Raleway:100" />
+	<!-- Preconnect for performance -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preconnect" href="https://api.github.com">
 
+	<!-- Modern Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+	<!-- Lucide Icons -->
+	<script src="https://unpkg.com/lucide@latest"></script>
+
+
+	<!-- Stylesheet -->
+	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+	<!-- Background effects -->
+	<div class="bg-grid"></div>
+	<canvas id="particles"></canvas>
 
-	<header>~arijit_mukherjee<span id="pulsor">▋</span></header>
+	<div class="container">
+		<!-- Main Header -->
+		<header class="main-header">
+			<div class="terminal-window">
+				<div class="terminal-header">
+					<span class="terminal-dot red"></span>
+					<span class="terminal-dot yellow"></span>
+					<span class="terminal-dot green"></span>
+				</div>
+				<div class="terminal-body">
+					<span class="terminal-prompt">~$</span>
+					<span class="terminal-command">whoami</span>
+					<br>
+					<span class="terminal-output">arijit_mukherjee</span>
+					<span class="cursor">▋</span>
+				</div>
+			</div>
+		</header>
 
-	<nav>
-		<a class="fade" href="https://github.com/arijitrim">./github</a>
-		<a class="fade" href="https://twitter.com/arijit_rim">./twitter</a>
-		<a class="fade" href="https://www.linkedin.com/in/arijitrim">./linkedin</a>
-		<a class="fade" href="https://www.instagram.com/arijitrim">./instagram</a>
-	</nav>
+		<!-- Social Links -->
+		<section class="social-links">
+			<div class="social-grid">
+				<a href="https://github.com/arijitrim" class="social-btn platform-github" target="_blank" rel="noopener noreferrer" title="GitHub">
+					<i data-lucide="github"></i>
+				</a>
+				<a href="https://twitter.com/arijit_rim" class="social-btn platform-x" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
+					<i data-lucide="twitter"></i>
+				</a>
+				<a href="https://www.linkedin.com/in/arijitrim" class="social-btn platform-linkedin" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+					<i data-lucide="linkedin"></i>
+				</a>
+				<a href="https://www.instagram.com/arijitrim" class="social-btn platform-instagram" target="_blank" rel="noopener noreferrer" title="Instagram">
+					<i data-lucide="instagram"></i>
+				</a>
+			</div>
+		</section>
 
-	<hr />
+		<!-- GitHub Activity -->
+		<section class="github-activity">
+			<h2 class="section-title">
+				<i data-lucide="activity"></i>
+				Recent Projects
+			</h2>
+			<div class="repos-grid" id="repos-list">
+				<div class="loading">Loading repositories...</div>
+			</div>
+		</section>
 
-	<footer>
-		<h6 id="copyleft">
-			<span>©</span>
-			arijitm.dev
-	</footer>
 
+		<!-- Footer -->
+		<footer class="footer">
+			<div class="footer-content">
+				<span class="copyleft">©</span>
+				<span>arijitm.dev</span>
+			</div>
+		</footer>
+	</div>
+
+	<!-- JavaScript -->
+	<script src="script.js"></script>
 </body>
 
 </html>
