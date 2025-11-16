@@ -455,13 +455,10 @@ body {
 	font-size: 0.9rem;
 	color: var(--color-text-dim);
 	font-family: var(--font-mono);
-}
-
-.copyleft {
-	display: inline-block;
-	transform: scaleX(-1);
-	font-weight: 700;
-	margin-right: 0.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
 }
 
 /* === Animations === */
