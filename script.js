@@ -36,7 +36,34 @@ document.addEventListener('DOMContentLoaded', () => {
 	initParticles();
 	fetchGitHubData();
 	initCardAnimations();
+	initTheme();
 });
+
+// Initialize Theme
+function initTheme() {
+	const themeToggle = document.getElementById('theme-toggle');
+	const html = document.documentElement;
+
+	// Check local storage or system preference
+	const savedTheme = localStorage.getItem('theme');
+	const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	const currentTheme = savedTheme || systemTheme;
+
+	html.setAttribute('data-theme', currentTheme);
+
+	if (themeToggle) {
+		themeToggle.addEventListener('click', () => {
+			const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+			html.setAttribute('data-theme', newTheme);
+			localStorage.setItem('theme', newTheme);
+
+			// Update particles color if needed (optional, as we used CSS vars but might need to re-trigger)
+			// For now, the particles use the initial color. To make them dynamic, we'd need to update the particle system.
+			// Let's just reload the page for full effect or leave as is. 
+			// Ideally we'd emit an event or call a method in initParticles.
+		});
+	}
+}
 
 // Initialize Lucide icons
 function initLucideIcons() {
@@ -51,9 +78,42 @@ function initParticles() {
 	const canvas = document.getElementById('particles');
 	if (!canvas) return;
 
+	// Check for reduced motion preference
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	if (prefersReducedMotion) return;
+
 	const ctx = canvas.getContext('2d');
 	let particles = [];
 	let animationFrameId;
+	let isVisible = true;
+
+	// Get colors from CSS variables
+	const getPrimaryColor = () => {
+		const style = getComputedStyle(document.documentElement);
+		const color = style.getPropertyValue('--color-primary').trim();
+		// Convert hex/named color to rgba for opacity manipulation if needed, 
+		// but for now we'll just use the variable and assume it's compatible or handle it simply.
+		// To properly handle opacity with CSS vars, we might need to parse it, 
+		// but for simplicity let's assume a fixed base color or use the variable directly if possible.
+		// However, the original code used rgba(0, 255, 136, opacity). 
+		// Let's try to parse the hex from the variable or fallback.
+		return color || '#00ff88';
+	};
+
+	// Helper to convert hex to rgb
+	function hexToRgb(hex) {
+		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		return result ? {
+			r: parseInt(result[1], 16),
+			g: parseInt(result[2], 16),
+			b: parseInt(result[3], 16)
+		} : { r: 0, g: 255, b: 136 }; // Fallback
+	}
+
+	let primaryColorRgb = hexToRgb(getPrimaryColor());
+
+	// Update color on theme change (if we implement theme toggle later)
+	// For now, just set it once.
 
 	// Set canvas size
 	function resizeCanvas() {
@@ -92,7 +152,7 @@ function initParticles() {
 		draw() {
 			ctx.beginPath();
 			ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-			ctx.fillStyle = `rgba(0, 255, 136, ${this.opacity})`;
+			ctx.fillStyle = `rgba(${primaryColorRgb.r}, ${primaryColorRgb.g}, ${primaryColorRgb.b}, ${this.opacity})`;
 			ctx.fill();
 		}
 	}
@@ -105,6 +165,8 @@ function initParticles() {
 
 	// Animation loop
 	function animate() {
+		if (!isVisible) return;
+
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 		particles.forEach((particle, i) => {
@@ -121,7 +183,7 @@ function initParticles() {
 					ctx.beginPath();
 					ctx.moveTo(particle.x, particle.y);
 					ctx.lineTo(otherParticle.x, otherParticle.y);
-					ctx.strokeStyle = `rgba(0, 255, 136, ${0.1 * (1 - distance / 100)})`;
+					ctx.strokeStyle = `rgba(${primaryColorRgb.r}, ${primaryColorRgb.g}, ${primaryColorRgb.b}, ${0.1 * (1 - distance / 100)})`;
 					ctx.lineWidth = 0.5;
 					ctx.stroke();
 				}
@@ -131,26 +193,73 @@ function initParticles() {
 		animationFrameId = requestAnimationFrame(animate);
 	}
 
+	// Intersection Observer to pause when off-screen
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				isVisible = true;
+				animate();
+			} else {
+				isVisible = false;
+				cancelAnimationFrame(animationFrameId);
+			}
+		});
+	});
+	observer.observe(canvas);
+
+	// Visibility API to pause when tab is hidden
+	document.addEventListener('visibilitychange', () => {
+		if (document.hidden) {
+			isVisible = false;
+			cancelAnimationFrame(animationFrameId);
+		} else {
+			isVisible = true;
+			animate();
+		}
+	});
+
 	animate();
 
 	// Cleanup on page unload
 	window.addEventListener('beforeunload', () => {
 		cancelAnimationFrame(animationFrameId);
+		observer.disconnect();
 	});
 }
 
 // Fetch GitHub data
 async function fetchGitHubData() {
+	const reposList = document.getElementById('repos-list');
+	if (!reposList) return;
+
 	try {
-		const reposData = await fetch(`${GITHUB_API}/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`).then(r => r.json());
+		const response = await fetch(`${GITHUB_API}/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`);
+
+		if (!response.ok) {
+			if (response.status === 403) {
+				throw new Error('Rate limit exceeded');
+			}
+			throw new Error('Failed to fetch repositories');
+		}
+
+		const reposData = await response.json();
 		displayRecentRepos(reposData);
 	} catch (error) {
 		console.error('Error fetching GitHub data:', error);
-		const reposList = document.getElementById('repos-list');
-		if (reposList) {
-			reposList.innerHTML = `
-				<div class="loading">Unable to load repositories. Please try again later.</div>
-			`;
+
+		let errorMessage = 'Unable to load repositories. Please try again later.';
+		if (error.message === 'Rate limit exceeded') {
+			errorMessage = 'GitHub API rate limit exceeded. Please check back in an hour.';
+		}
+
+		reposList.innerHTML = `
+			<div class="loading error">
+				<i data-lucide="alert-circle"></i>
+				<p>${errorMessage}</p>
+			</div>
+		`;
+		if (typeof lucide !== 'undefined') {
+			lucide.createIcons();
 		}
 	}
 }

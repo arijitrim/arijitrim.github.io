@@ -13,7 +13,8 @@
 	--color-primary-dim: #00cc6a;
 	--color-secondary: #00d9ff;
 	--color-text: #e0e0e0;
-	--color-text-dim: #a0a0a0;
+	--color-text-dim: #b0b0b0;
+	/* Improved contrast from #a0a0a0 */
 	--color-border: rgba(255, 255, 255, 0.1);
 	--color-glass: rgba(255, 255, 255, 0.05);
 
@@ -33,6 +34,21 @@
 	--transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	--shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 	--glow: 0 0 20px var(--color-primary);
+}
+
+/* Light Mode Variables */
+[data-theme="light"] {
+	--color-bg: #f0f2f5;
+	--color-bg-secondary: #ffffff;
+	--color-primary: #00a859;
+	/* Darker green for light mode */
+	--color-primary-dim: #008f4c;
+	--color-secondary: #0077b6;
+	--color-text: #1a1a1a;
+	--color-text-dim: #4a4a4a;
+	--color-border: rgba(0, 0, 0, 0.1);
+	--color-glass: rgba(255, 255, 255, 0.6);
+	--shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 /* === Reset & Base === */
@@ -132,9 +148,17 @@ body {
 	display: inline-block;
 }
 
-.terminal-dot.red { background: #ff5f56; }
-.terminal-dot.yellow { background: #ffbd2e; }
-.terminal-dot.green { background: #27c93f; }
+.terminal-dot.red {
+	background: #ff5f56;
+}
+
+.terminal-dot.yellow {
+	background: #ffbd2e;
+}
+
+.terminal-dot.green {
+	background: #27c93f;
+}
 
 .terminal-body {
 	padding: var(--spacing-md);
@@ -149,7 +173,8 @@ body {
 }
 
 .terminal-command {
-	color: var(--color-text-dim);
+	color: var(--color-text);
+	/* Improved contrast */
 }
 
 .terminal-output {
@@ -467,6 +492,7 @@ body {
 		opacity: 0;
 		transform: translateY(30px);
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -474,13 +500,28 @@ body {
 }
 
 @keyframes blink {
-	0%, 50% { opacity: 1; }
-	51%, 100% { opacity: 0; }
+
+	0%,
+	50% {
+		opacity: 1;
+	}
+
+	51%,
+	100% {
+		opacity: 0;
+	}
 }
 
 @keyframes float {
-	0%, 100% { transform: translateY(0); }
-	50% { transform: translateY(-10px); }
+
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-10px);
+	}
 }
 
 /* === Responsive Design === */
@@ -518,6 +559,7 @@ body {
 
 /* === Accessibility === */
 @media (prefers-reduced-motion: reduce) {
+
 	*,
 	*::before,
 	*::after {
@@ -532,4 +574,94 @@ body {
 	:root {
 		color-scheme: dark;
 	}
+}
+
+/* === Theme Toggle === */
+.theme-toggle {
+	position: fixed;
+	top: 1.5rem;
+	right: 1.5rem;
+	background: var(--color-bg-secondary);
+	border: 1px solid var(--color-border);
+	border-radius: 50%;
+	width: 3rem;
+	height: 3rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	z-index: 100;
+	transition: var(--transition);
+	color: var(--color-text);
+}
+
+.theme-toggle:hover {
+	transform: rotate(15deg);
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+}
+
+.sun-icon,
+.moon-icon {
+	position: absolute;
+	transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+}
+
+[data-theme="dark"] .sun-icon {
+	opacity: 0;
+	transform: rotate(90deg) scale(0);
+}
+
+[data-theme="light"] .moon-icon {
+	opacity: 0;
+	transform: rotate(-90deg) scale(0);
+}
+
+/* === Skills Section === */
+.skills-section {
+	margin-bottom: var(--spacing-xl);
+	animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.skills-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: var(--spacing-md);
+}
+
+.skill-category {
+	background: linear-gradient(135deg, var(--color-glass), transparent);
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius);
+	padding: var(--spacing-md);
+	backdrop-filter: blur(10px);
+}
+
+.skill-category h3 {
+	color: var(--color-primary);
+	font-family: var(--font-mono);
+	margin-bottom: var(--spacing-sm);
+	font-size: 1.2rem;
+}
+
+.skill-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.skill-tags span {
+	background: var(--color-bg);
+	border: 1px solid var(--color-border);
+	padding: 0.25rem 0.75rem;
+	border-radius: 2rem;
+	font-size: 0.85rem;
+	color: var(--color-text-dim);
+	transition: var(--transition);
+}
+
+.skill-tags span:hover {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+	transform: translateY(-2px);
 }
