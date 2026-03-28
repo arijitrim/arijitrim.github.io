@@ -1,8 +1,56 @@
 document.addEventListener("DOMContentLoaded", () => {
+	initThemeSwitcher();
 	initRevealAnimations();
 	protectHeroPhoto();
 	initProfileOverlay();
 });
+
+function initThemeSwitcher() {
+	const storageKey = "theme-preference";
+	const root = document.documentElement;
+	const buttons = document.querySelectorAll("[data-theme-option]");
+	const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+	if (buttons.length === 0) return;
+
+	const getStoredTheme = () => window.localStorage.getItem(storageKey) || "auto";
+
+	const getResolvedTheme = (preference) => {
+		if (preference === "dark") return "dark";
+		if (preference === "light") return "light";
+		return mediaQuery.matches ? "dark" : "light";
+	};
+
+	const syncButtons = (preference) => {
+		buttons.forEach((button) => {
+			const isActive = button.dataset.themeOption === preference;
+			button.classList.toggle("is-active", isActive);
+			button.setAttribute("aria-pressed", String(isActive));
+		});
+	};
+
+	const applyTheme = (preference) => {
+		root.dataset.theme = getResolvedTheme(preference);
+		syncButtons(preference);
+	};
+
+	let currentPreference = getStoredTheme();
+	applyTheme(currentPreference);
+
+	buttons.forEach((button) => {
+		button.addEventListener("click", () => {
+			currentPreference = button.dataset.themeOption || "auto";
+			window.localStorage.setItem(storageKey, currentPreference);
+			applyTheme(currentPreference);
+		});
+	});
+
+	mediaQuery.addEventListener("change", () => {
+		if (currentPreference === "auto") {
+			applyTheme(currentPreference);
+		}
+	});
+}
 
 function initRevealAnimations() {
 	const revealItems = document.querySelectorAll(".reveal");
